@@ -3,53 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2027 七美滑雪團｜個人行程與預算試算</title>
+  <title>2027 七美滑雪團｜行程與預算試算</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-color: #f8f9fa;
-      --card-bg: #ffffff;
+      --bg-gradient: linear-gradient(135deg, #eef6ff 0%, #dbeafe 50%, #e0f2fe 100%);
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-border: rgba(186, 230, 253, 0.8);
       --text-main: #0f172a;
-      --text-muted: #64748b;
-      --primary-blue: #2563eb;
-      --primary-hover: #1d4ed8;
-      --border-color: #e2e8f0;
-      --radius: 12px;
-      --transition: all 0.2s ease;
+      --text-muted: #475569;
+      --snow-blue: #0284c7;
+      --snow-blue-hover: #0369a1;
+      --snow-ice: #e0f2fe;
+      --accent-indigo: #4338ca;
+      --radius-lg: 20px;
+      --radius-md: 12px;
+      --shadow-sm: 0 4px 12px -2px rgba(14, 165, 233, 0.08);
+      --shadow-lg: 0 12px 28px -6px rgba(14, 165, 233, 0.15);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
     }
 
     body {
-      background-color: var(--bg-color);
+      background: var(--bg-gradient);
       color: var(--text-main);
-      padding: 40px 20px;
+      padding: 40px 16px;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      align-items: flex-start;
+      background-attachment: fixed;
     }
 
     .container {
-      max-width: 720px;
+      max-width: 800px;
       width: 100%;
     }
 
     header {
-      margin-bottom: 28px;
       text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: rgba(224, 242, 254, 0.9);
+      color: var(--snow-blue);
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 30px;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      backdrop-filter: blur(4px);
     }
 
     header h1 {
-      font-size: 28px;
-      font-weight: 700;
+      font-size: 32px;
+      font-weight: 900;
       letter-spacing: -0.5px;
       color: var(--text-main);
       margin-bottom: 8px;
@@ -60,14 +81,118 @@
       color: var(--text-muted);
     }
 
+    /* 手風琴卡片通用 */
+    .accordion-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius-lg);
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--card-border);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .accordion-header {
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      background: rgba(255, 255, 255, 0.6);
+      transition: background 0.2s;
+    }
+
+    .accordion-header:hover {
+      background: rgba(240, 249, 255, 0.9);
+    }
+
+    .accordion-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-label {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .accordion-toggle-btn {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--snow-blue);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #f0f9ff;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    .chevron {
+      transition: transform 0.3s ease;
+      font-size: 12px;
+    }
+
+    .accordion-card.open .chevron {
+      transform: rotate(180deg);
+    }
+
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-in-out, padding 0.3s ease;
+      background: rgba(248, 250, 252, 0.7);
+      border-top: 1px solid transparent;
+    }
+
+    .accordion-card.open .accordion-body {
+      max-height: 1000px;
+      padding: 20px 24px;
+      border-top-color: var(--card-border);
+    }
+
+    /* 固定開銷拆解 Grid */
+    .cost-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .cost-item {
+      background: white;
+      padding: 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid #e0f2fe;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .cost-item .title {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .cost-item .val {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* 步驟卡片 */
     .step-card {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
       padding: 24px;
-      margin-bottom: 16px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-      transition: var(--transition);
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
     }
 
     .step-card.disabled {
@@ -75,117 +200,194 @@
       pointer-events: none;
     }
 
-    .step-title {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 14px;
+    .step-header {
       display: flex;
       align-items: center;
-      gap: 10px;
-      color: var(--text-main);
+      gap: 12px;
+      margin-bottom: 18px;
     }
 
-    .step-number {
-      background: var(--text-main);
+    .step-num {
+      width: 28px;
+      height: 28px;
+      background: var(--snow-blue);
       color: white;
-      width: 22px;
-      height: 22px;
       border-radius: 50%;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
+      font-size: 13px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
+    }
+
+    .step-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
     }
 
     .input-field {
       width: 100%;
-      padding: 12px 14px;
-      border: 1.5px solid var(--border-color);
-      border-radius: 8px;
-      font-size: 14px;
+      padding: 14px 16px;
+      border: 1.5px solid var(--card-border);
+      border-radius: var(--radius-md);
+      font-size: 15px;
       outline: none;
-      transition: var(--transition);
+      transition: all 0.2s;
+      background: white;
     }
 
     .input-field:focus {
-      border-color: var(--primary-blue);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      border-color: var(--snow-blue);
+      box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
     }
 
+    /* 航班卡片 */
+    .flight-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .flight-card {
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .flight-card:hover {
+      border-color: #bae6fd;
+      transform: translateY(-2px);
+    }
+
+    .flight-card.active {
+      border-color: var(--snow-blue);
+      background: #f0f9ff;
+      box-shadow: 0 0 0 1px var(--snow-blue);
+    }
+
+    .airline-tag {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--snow-blue);
+      background: #e0f2fe;
+      padding: 4px 10px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 12px;
+      width: fit-content;
+    }
+
+    .flight-time-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .time-large {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.5px;
+    }
+
+    .arrow-icon {
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .flight-subtext {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      border-top: 1px dashed #e2e8f0;
+      padding-top: 8px;
+      margin-top: 4px;
+    }
+
+    /* 一般選項按鈕 */
     .options-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 12px;
     }
 
     .option-btn {
       background: white;
-      border: 1.5px solid var(--border-color);
-      border-radius: 8px;
-      padding: 14px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 16px;
       text-align: left;
       cursor: pointer;
-      transition: var(--transition);
+      transition: all 0.2s ease;
       outline: none;
     }
 
     .option-btn:hover {
-      border-color: var(--primary-blue);
-      background-color: #f8fafc;
+      border-color: #bae6fd;
     }
 
     .option-btn.active {
-      border-color: var(--primary-blue);
-      background-color: #eff6ff;
-      box-shadow: 0 0 0 1px var(--primary-blue);
+      border-color: var(--snow-blue);
+      background: #f0f9ff;
+      box-shadow: 0 0 0 1px var(--snow-blue);
     }
 
     .option-btn .label {
-      font-size: 14px;
-      font-weight: 600;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
       display: block;
       margin-bottom: 4px;
-      color: var(--text-main);
     }
 
     .option-btn .desc {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-muted);
+      line-height: 1.4;
     }
 
-    /* 精緻方案成果卡片 */
+    /* 成果卡片 */
     .summary-card {
-      background-color: #ffffff;
-      border: 2px solid var(--text-main);
-      border-radius: var(--radius);
+      background: white;
+      border-radius: var(--radius-lg);
       padding: 28px;
-      margin-top: 28px;
-      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+      margin-top: 32px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--card-border);
     }
 
     .summary-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 2px solid var(--border-color);
       padding-bottom: 16px;
+      border-bottom: 2px solid #f1f5f9;
       margin-bottom: 20px;
     }
 
     .summary-header h2 {
       font-size: 20px;
-      font-weight: 700;
-      color: var(--text-main);
+      font-weight: 800;
     }
 
     .user-tag {
-      font-size: 14px;
-      font-weight: 600;
-      background-color: #f1f5f9;
+      background: #e0f2fe;
+      color: var(--snow-blue);
       padding: 6px 14px;
       border-radius: 20px;
-      color: var(--text-main);
+      font-size: 14px;
+      font-weight: 700;
     }
 
     .plan-table {
@@ -195,15 +397,14 @@
     }
 
     .plan-table th, .plan-table td {
-      padding: 12px 8px;
+      padding: 14px 10px;
       text-align: left;
       font-size: 14px;
-      border-bottom: 1px solid var(--border-color);
+      border-bottom: 1px solid #f1f5f9;
     }
 
     .plan-table th {
       color: var(--text-muted);
-      font-weight: 500;
       font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -211,7 +412,7 @@
 
     .plan-table td.cost {
       text-align: right;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--text-main);
     }
 
@@ -223,50 +424,46 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: #f8fafc;
-      padding: 16px 20px;
-      border-radius: 8px;
-      margin-top: 12px;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      padding: 20px;
+      border-radius: var(--radius-md);
+      margin-top: 16px;
+      border: 1px solid #bae6fd;
     }
 
     .total-row .label {
-      font-size: 15px;
-      font-weight: 600;
+      font-size: 16px;
+      font-weight: 700;
     }
 
     .total-row .amount {
-      font-size: 26px;
-      font-weight: 700;
-      color: var(--primary-blue);
-    }
-
-    .action-btns {
-      margin-top: 20px;
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--snow-blue);
     }
 
     .btn-action {
       width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 15px;
-      cursor: pointer;
-      transition: var(--transition);
-      text-align: center;
-    }
-
-    .btn-primary {
-      background-color: var(--primary-blue);
+      padding: 16px;
+      background: var(--snow-blue);
       color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: 20px;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
     }
 
-    .btn-primary:hover {
-      background-color: var(--primary-hover);
+    .btn-action:hover {
+      background: var(--snow-blue-hover);
+      transform: translateY(-1px);
     }
 
-    @media (max-width: 580px) {
-      .options-grid {
+    @media (max-width: 600px) {
+      .flight-grid, .options-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -276,19 +473,96 @@
 
 <div class="container">
   <header>
-    <h1>2027 七美滑雪團</h1>
-    <p>填寫姓名與行程偏好，即可產出個人專屬試算方案</p>
+    <div class="hero-badge">❄️ 2027 WINTER SKI TRIP</div>
+    <h1>七美滑雪團｜個人預算試算</h1>
+    <p>自訂航班與行程，即時試算個人專屬預算</p>
   </header>
 
-  <!-- Step 1: 基本資料 -->
+  <!-- 固定開銷手風琴面板 -->
+  <div class="accordion-card" id="fixed-cost-accordion">
+    <div class="accordion-header" onclick="toggleAccordion('fixed-cost-accordion')">
+      <div class="accordion-title-group">
+        <span class="card-label">📌 基礎固定開銷 (小計 NT$ 30,700)</span>
+      </div>
+      <div class="accordion-toggle-btn">
+        <span>檢視明細</span>
+        <span class="chevron">▼</span>
+      </div>
+    </div>
+    <div class="accordion-body">
+      <div class="cost-grid">
+        <div class="cost-item">
+          <div class="title">機票 (預估)</div>
+          <div class="val">NT$ 17,000</div>
+        </div>
+        <div class="cost-item">
+          <div class="title">湯澤住宿 (2晚預估)</div>
+          <div class="val">NT$ 5,000</div>
+        </div>
+        <div class="cost-item">
+          <div class="title">新幹線來回車票</div>
+          <div class="val">NT$ 3,700</div>
+        </div>
+        <div class="cost-item">
+          <div class="title">餐費預算 (約計)</div>
+          <div class="val">NT$ 5,000</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 1: 姓名 -->
   <div class="step-card">
-    <div class="step-title"><span class="step-number">1</span> 請輸入您的姓名</div>
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div class="step-title">請輸入您的姓名</div>
+    </div>
     <input type="text" id="user-name" class="input-field" placeholder="請輸入姓名 (例：王小明)" oninput="calculate()">
   </div>
 
-  <!-- Step 2: 回程天數 -->
+  <!-- Step 2: 去程航班 -->
   <div class="step-card">
-    <div class="step-title"><span class="step-number">2</span> 回程天數</div>
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <div class="step-title">去程航班偏好</div>
+    </div>
+    <div class="flight-grid">
+      <div class="flight-card active" onclick="selectFlight('dep', 'scoot', this)">
+        <div class="airline-tag">酷航｜1/14 出發</div>
+        <div class="flight-time-box">
+          <span class="time-large">06:40</span>
+          <span class="arrow-icon">→</span>
+          <span class="time-large">10:40</span>
+        </div>
+        <div class="flight-subtext">早班機出發</div>
+      </div>
+
+      <div class="flight-card" onclick="selectFlight('dep', 'jetstar', this)">
+        <div class="airline-tag">捷星日本｜1/14 出發</div>
+        <div class="flight-time-box">
+          <span class="time-large">02:30</span>
+          <span class="arrow-icon">→</span>
+          <span class="time-large">06:35</span>
+        </div>
+        <div class="flight-subtext">1/13 24:00 左右到桃機</div>
+      </div>
+
+      <div class="flight-card" onclick="selectFlight('dep', 'self', this)">
+        <div class="airline-tag">自行安排</div>
+        <div class="flight-time-box">
+          <span class="time-large">自選航班</span>
+        </div>
+        <div class="flight-subtext">也可以選擇 1/13 就出發</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: 回程天數 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-num">3</div>
+      <div class="step-title">回程天數</div>
+    </div>
     <div class="options-grid">
       <button class="option-btn active" onclick="selectOption('days', '4', this)">
         <span class="label">1/17 回台 (4天3夜)</span>
@@ -301,28 +575,53 @@
     </div>
   </div>
 
-  <!-- Step 3: 回程航班選項 -->
+  <!-- Step 4: 回程航班 -->
   <div class="step-card">
-    <div class="step-title"><span class="step-number">3</span> 回程航班規劃</div>
-    <div class="options-grid">
-      <button class="option-btn active" onclick="selectOption('flight', 'same', this)">
-        <span class="label">想與其他人搭同一航班</span>
-        <span class="desc">仍須自己購票</span>
-      </button>
-      <button class="option-btn" onclick="selectOption('flight', 'self', this)">
-        <span class="label">自行選擇及購票</span>
-        <span class="desc">自由安排航班時間</span>
-      </button>
+    <div class="step-header">
+      <div class="step-num">4</div>
+      <div class="step-title">回程航班偏好</div>
+    </div>
+    <div class="flight-grid">
+      <div class="flight-card active" onclick="selectFlight('ret', 'jetstar', this)">
+        <div class="airline-tag" id="ret-tag-jetstar">捷星日本｜1/17</div>
+        <div class="flight-time-box">
+          <span class="time-large">22:25</span>
+          <span class="arrow-icon">→</span>
+          <span class="time-large">01:30</span>
+        </div>
+        <div class="flight-subtext">超晚班機，逛街時間充裕</div>
+      </div>
+
+      <div class="flight-card" onclick="selectFlight('ret', 'scoot', this)">
+        <div class="airline-tag" id="ret-tag-scoot">酷航｜1/17</div>
+        <div class="flight-time-box">
+          <span class="time-large">19:55</span>
+          <span class="arrow-icon">→</span>
+          <span class="time-large">23:10</span>
+        </div>
+        <div class="flight-subtext">晚間返抵台灣</div>
+      </div>
+
+      <div class="flight-card" onclick="selectFlight('ret', 'self', this)">
+        <div class="airline-tag">自行安排</div>
+        <div class="flight-time-box">
+          <span class="time-large">自選航班</span>
+        </div>
+        <div class="flight-subtext">自由安排回程時間與機場</div>
+      </div>
     </div>
   </div>
 
-  <!-- Step 4: 東京住宿 -->
+  <!-- Step 5: 東京住宿 -->
   <div class="step-card">
-    <div class="step-title"><span class="step-number">4</span> 東京住宿 (1/16 起)</div>
+    <div class="step-header">
+      <div class="step-num">5</div>
+      <div class="step-title">東京住宿 (1/16 起)</div>
+    </div>
     <div class="options-grid">
       <button class="option-btn active" onclick="selectOption('hotel', 'hotel', this)">
         <span class="label">團體訂房</span>
-        <span class="desc">the Moto Hotel ($1,438/晚)</span>
+        <span class="desc">約計 $1,438 / 晚</span>
       </button>
       <button class="option-btn" onclick="selectOption('hotel', 'free', this)">
         <span class="label">自理 / 住朋友家</span>
@@ -331,9 +630,12 @@
     </div>
   </div>
 
-  <!-- Step 5: 滑雪天數 -->
+  <!-- Step 6: 滑雪天數 -->
   <div class="step-card">
-    <div class="step-title"><span class="step-number">5</span> 滑雪天數</div>
+    <div class="step-header">
+      <div class="step-num">6</div>
+      <div class="step-title">滑雪天數</div>
+    </div>
     <div class="options-grid">
       <button class="option-btn active" onclick="selectOption('skiDays', '2', this)">
         <span class="label">滑雪 2 天</span>
@@ -345,18 +647,21 @@
       </button>
       <button class="option-btn" onclick="selectOption('skiDays', '0', this)">
         <span class="label">不滑雪</span>
-        <span class="desc">純觀光/泡湯 ($0)</span>
+        <span class="desc">純觀光 / 泡湯 ($0)</span>
       </button>
     </div>
   </div>
 
-  <!-- Step 6: 雪具租借 -->
+  <!-- Step 7: 雪具租借 -->
   <div class="step-card" id="card-rental">
-    <div class="step-title"><span class="step-number">6</span> 雪具租借 (SNOW RENTAL SHOP)</div>
+    <div class="step-header">
+      <div class="step-num">7</div>
+      <div class="step-title">雪具租借</div>
+    </div>
     <div class="options-grid">
       <button class="option-btn active" onclick="selectOption('rental', 'yes', this)">
         <span class="label">租借全套雪具</span>
-        <span class="desc" id="rental-desc">含板/靴/衣褲/護具</span>
+        <span class="desc" id="rental-desc">含板 / 靴 / 衣褲 / 護具 (約計)</span>
       </button>
       <button class="option-btn" onclick="selectOption('rental', 'no', this)">
         <span class="label">自備雪具 / 不租借</span>
@@ -365,17 +670,20 @@
     </div>
   </div>
 
-  <!-- Step 7: 教練課程 -->
+  <!-- Step 8: 教練課程 -->
   <div class="step-card" id="card-coach">
-    <div class="step-title"><span class="step-number">7</span> 1/15 滑雪教練課 (1對4平攤)</div>
+    <div class="step-header">
+      <div class="step-num">8</div>
+      <div class="step-title">1/15 滑雪教練課 (1對4平攤)</div>
+    </div>
     <div class="options-grid">
       <button class="option-btn active" onclick="selectOption('coach', 'full', this)">
         <span class="label">全天教練課</span>
-        <span class="desc">$14,000/堂 → 約 $3,500/人</span>
+        <span class="desc">$14,000 / 堂 → 約 $3,500 / 人</span>
       </button>
       <button class="option-btn" onclick="selectOption('coach', 'half', this)">
         <span class="label">半天教練課</span>
-        <span class="desc">$8,000/堂 → 約 $2,000/人</span>
+        <span class="desc">$8,000 / 堂 → 約 $2,000 / 人</span>
       </button>
       <button class="option-btn" onclick="selectOption('coach', 'none', this)">
         <span class="label">不上課</span>
@@ -384,79 +692,133 @@
     </div>
   </div>
 
-  <!-- 精緻個人方案表 -->
-  <div class="summary-card" id="summary-area">
+  <!-- 試算結果面板 (含手風琴明細) -->
+  <div class="summary-card">
     <div class="summary-header">
-      <h2>個人專屬方案與預算表</h2>
+      <h2>個人專屬試算方案</h2>
       <div class="user-tag" id="disp-user">訪客</div>
     </div>
 
+    <!-- 方案摘要面板 (預設顯示大項內容) -->
     <table class="plan-table">
       <thead>
         <tr>
           <th>項目</th>
           <th>選定內容</th>
-          <th style="text-align: right;">預估金額</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>基礎固定開銷</strong></td>
-          <td class="detail">機票 / 湯澤住宿 2 晚 / 新幹線 / 餐費預算</td>
-          <td class="cost">NT$ 32,679</td>
+          <td><strong>去程航班</strong></td>
+          <td class="detail" id="disp-dep-detail">1/14 酷航 (06:40-10:40)</td>
         </tr>
         <tr>
-          <td><strong>回程航班安排</strong></td>
-          <td class="detail" id="disp-flight-detail">想與其他人搭同一航班 (仍須自己購票)</td>
-          <td class="cost">包含於機票</td>
+          <td><strong>回程航班</strong></td>
+          <td class="detail" id="disp-ret-detail">1/17 捷星 (22:25-01:30)</td>
         </tr>
         <tr>
           <td><strong>東京住宿</strong></td>
-          <td class="detail" id="disp-hotel-detail">團體訂房 (1 晚)</td>
-          <td class="cost" id="disp-hotel-cost">NT$ 1,438</td>
+          <td class="detail" id="disp-hotel-detail">團體訂房 (約計 1 晚)</td>
         </tr>
         <tr>
-          <td><strong>岩原雪票</strong></td>
+          <td><strong>雪票規劃</strong></td>
           <td class="detail" id="disp-pass-detail">2 天雪票</td>
-          <td class="cost" id="disp-pass-cost">NT$ 2,350</td>
         </tr>
         <tr>
           <td><strong>雪具租借</strong></td>
-          <td class="detail" id="disp-rental-detail">全套租借 (2 天)</td>
-          <td class="cost" id="disp-rental-cost">NT$ 5,126</td>
+          <td class="detail" id="disp-rental-detail">全套租借 (約計 2 天)</td>
         </tr>
         <tr>
           <td><strong>教練課程</strong></td>
           <td class="detail" id="disp-coach-detail">1/15 全天班 (1對4平攤)</td>
-          <td class="cost" id="disp-coach-cost">NT$ 3,500</td>
         </tr>
       </tbody>
     </table>
 
-    <div class="total-row">
-      <span class="label">我的預估金額</span>
-      <span class="amount" id="disp-total">NT$ 45,093</span>
+    <!-- 費用明細手風琴面板 (收合詳細費用) -->
+    <div class="accordion-card" id="detail-cost-accordion" style="margin-top: 16px; margin-bottom: 0;">
+      <div class="accordion-header" onclick="toggleAccordion('detail-cost-accordion')">
+        <div class="accordion-title-group">
+          <span class="card-label">📊 檢視各項預估金額明細</span>
+        </div>
+        <div class="accordion-toggle-btn">
+          <span>展開金額拆解</span>
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+      <div class="accordion-body">
+        <table class="plan-table">
+          <thead>
+            <tr>
+              <th>費用細項</th>
+              <th style="text-align: right;">金額</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>基礎固定開銷 (機票/湯澤住宿/新幹線/餐費)</td>
+              <td class="cost">NT$ 30,700</td>
+            </tr>
+            <tr>
+              <td>東京住宿費用 (約計)</td>
+              <td class="cost" id="disp-hotel-cost">NT$ 1,438</td>
+            </tr>
+            <tr>
+              <td>雪票費用 (約計)</td>
+              <td class="cost" id="disp-pass-cost">NT$ 2,350</td>
+            </tr>
+            <tr>
+              <td>雪具租借費用 (約計)</td>
+              <td class="cost" id="disp-rental-cost">NT$ 5,126</td>
+            </tr>
+            <tr>
+              <td>教練課程費用</td>
+              <td class="cost" id="disp-coach-cost">NT$ 3,500</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
-    <div class="action-btns">
-      <button class="btn-action btn-primary" onclick="copyPlan()">複製文字傳 LINE</button>
+    <div class="total-row">
+      <span class="label">預估總金額</span>
+      <span class="amount" id="disp-total">NT$ 43,114</span>
     </div>
+
+    <button class="btn-action" onclick="copyPlan()">複製文字傳至 LINE</button>
   </div>
 </div>
 
 <script>
-  const BASE_COST = 32679;
+  const BASE_COST = 30700;
   const HOTEL_NIGHTLY = 1438;
   const RENTAL_DAILY = 2563;
 
   const state = {
+    depOption: 'scoot',
     days: 4,
-    flight: 'same',
+    retOption: 'jetstar',
     hotel: 'hotel',
     skiDays: 2,
     rental: 'yes',
     coach: 'full'
   };
+
+  function toggleAccordion(id) {
+    const card = document.getElementById(id);
+    card.classList.toggle('open');
+  }
+
+  function selectFlight(type, val, el) {
+    if (type === 'dep') state.depOption = val;
+    if (type === 'ret') state.retOption = val;
+
+    const cards = el.parentElement.querySelectorAll('.flight-card');
+    cards.forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+
+    calculate();
+  }
 
   function selectOption(category, value, element) {
     state[category] = isNaN(value) ? value : parseInt(value);
@@ -473,6 +835,12 @@
     const userName = document.getElementById('user-name').value.trim() || '訪客';
     document.getElementById('disp-user').innerText = userName;
 
+    // 更新回程卡片上的日期 Tag
+    const retDateText = state.days === 4 ? '1/17' : '1/18';
+    document.getElementById('ret-tag-jetstar').innerText = `捷星日本｜${retDateText}`;
+    document.getElementById('ret-tag-scoot').innerText = `酷航｜${retDateText}`;
+
+    // 關閉不適用選項
     const cardRental = document.getElementById('card-rental');
     const cardCoach = document.getElementById('card-coach');
     const rentalDesc = document.getElementById('rental-desc');
@@ -485,39 +853,47 @@
       cardCoach.classList.remove('disabled');
     }
 
-    if (state.skiDays > 0) {
-      rentalDesc.innerText = `租借 ${state.skiDays} 天 (NT$ ${(RENTAL_DAILY * state.skiDays).toLocaleString()})`;
-    } else {
-      rentalDesc.innerText = `費用 $0`;
-    }
+    // 1. 去程描述 (補上 1/14 日期統一對齊結構)
+    let depDetail = '';
+    if (state.depOption === 'scoot') depDetail = '1/14 酷航 (06:40-10:40)';
+    else if (state.depOption === 'jetstar') depDetail = '1/14 捷星日本 (02:30-06:35)';
+    else depDetail = '1/14 自行安排 (可選 1/13 出發)';
 
-    // 1. 航班細節
-    let flightDetail = state.flight === 'same' ? '想與其他人搭同一航班 (仍須自己購票)' : '自行選擇及購票';
+    // 2. 回程描述
+    let retDetail = '';
+    if (state.retOption === 'jetstar') retDetail = `${retDateText} 捷星 (22:25-01:30)`;
+    else if (state.retOption === 'scoot') retDetail = `${retDateText} 酷航 (19:55-23:10)`;
+    else retDetail = `${retDateText} 自行安排`;
 
-    // 2. 東京住宿
+    // 3. 東京住宿
     let hotelCost = 0;
     let hotelDetail = '自理 / 住朋友家';
     if (state.hotel === 'hotel') {
       const nights = state.days === 4 ? 1 : 2;
-      hotelCost = nights * HOTEL_NIGHTLY;
-      hotelDetail = `團體訂房 (${nights} 晚)`;
+      hotelCost = Math.round(nights * HOTEL_NIGHTLY);
+      hotelDetail = `團體訂房 (約計 ${nights} 晚)`;
     }
 
-    // 3. 雪票
+    // 4. 雪票
     let passCost = 0;
     let passDetail = '不購買雪票';
     if (state.skiDays === 2) { passCost = 2350; passDetail = '2 天雪票 (1/15+1/16)'; }
     else if (state.skiDays === 1) { passCost = 1175; passDetail = '1 天雪票 (1/15)'; }
 
-    // 4. 雪具租借
+    // 5. 雪具租借
     let rentalCost = 0;
     let rentalDetail = '不租借 / 自備';
     if (state.skiDays > 0 && state.rental === 'yes') {
-      rentalCost = state.skiDays * RENTAL_DAILY;
-      rentalDetail = `全套雪具租借 (${state.skiDays} 天)`;
+      rentalCost = Math.round(state.skiDays * RENTAL_DAILY);
+      rentalDetail = `全套雪具租借 (約計 ${state.skiDays} 天)`;
+      rentalDesc.innerText = `租借 ${state.skiDays} 天 (約計 NT$ ${rentalCost.toLocaleString()})`;
+    } else if (state.skiDays === 0) {
+      rentalDesc.innerText = `費用 $0`;
+    } else {
+      rentalDesc.innerText = `含板 / 靴 / 衣褲 / 護具 (約計)`;
     }
 
-    // 5. 教練費
+    // 6. 教練費
     let coachCost = 0;
     let coachDetail = '不上課';
     if (state.skiDays > 0) {
@@ -525,19 +901,20 @@
       else if (state.coach === 'half') { coachCost = 2000; coachDetail = '1/15 半天班 (1對4平攤)'; }
     }
 
-    const total = BASE_COST + hotelCost + passCost + rentalCost + coachCost;
+    const total = Math.round(BASE_COST + hotelCost + passCost + rentalCost + coachCost);
 
-    // 更新 DOM 文字
-    document.getElementById('disp-flight-detail').innerText = flightDetail;
+    // 更新介面
+    document.getElementById('disp-dep-detail').innerText = depDetail;
+    document.getElementById('disp-ret-detail').innerText = retDetail;
 
     document.getElementById('disp-hotel-detail').innerText = hotelDetail;
-    document.getElementById('disp-hotel-cost').innerText = `NT$ ${hotelCost.toLocaleString()}`;
+    document.getElementById('disp-hotel-cost').innerText = `約計 NT$ ${hotelCost.toLocaleString()}`;
 
     document.getElementById('disp-pass-detail').innerText = passDetail;
     document.getElementById('disp-pass-cost').innerText = `NT$ ${passCost.toLocaleString()}`;
 
     document.getElementById('disp-rental-detail').innerText = rentalDetail;
-    document.getElementById('disp-rental-cost').innerText = `NT$ ${rentalCost.toLocaleString()}`;
+    document.getElementById('disp-rental-cost').innerText = `約計 NT$ ${rentalCost.toLocaleString()}`;
 
     document.getElementById('disp-coach-detail').innerText = coachDetail;
     document.getElementById('disp-coach-cost').innerText = `NT$ ${coachCost.toLocaleString()}`;
@@ -547,27 +924,30 @@
 
   function copyPlan() {
     const user = document.getElementById('disp-user').innerText;
-    const flight = document.getElementById('disp-flight-detail').innerText;
+    const dep = document.getElementById('disp-dep-detail').innerText;
+    const ret = document.getElementById('disp-ret-detail').innerText;
     const hotel = document.getElementById('disp-hotel-detail').innerText;
     const pass = document.getElementById('disp-pass-detail').innerText;
     const rental = document.getElementById('disp-rental-detail').innerText;
     const coach = document.getElementById('disp-coach-detail').innerText;
     const total = document.getElementById('disp-total').innerText;
 
-    const text = `【2027 七美滑雪團】個人方案試算表
+    const text = `【2027 七美滑雪團】個人預算試算表
 👤 姓名：${user}
 -----------------------------
-• 基礎固定開銷：NT$ 32,679
-• 回程航班安排：${flight}
+• 基礎固定開銷：NT$ 30,700
+  (含機票$17k / 湯澤住宿$5k / 新幹線$3.7k / 餐費$5k)
+• 去程航班：${dep}
+• 回程航班：${ret}
 • 東京住宿：${hotel} (${document.getElementById('disp-hotel-cost').innerText})
-• 岩原雪票：${pass} (${document.getElementById('disp-pass-cost').innerText})
+• 雪票：${pass} (${document.getElementById('disp-pass-cost').innerText})
 • 雪具租借：${rental} (${document.getElementById('disp-rental-cost').innerText})
 • 教練課程：${coach} (${document.getElementById('disp-coach-cost').innerText})
 -----------------------------
-💰 我的預估金額：${total}`;
+💰 預估總金額：${total}`;
 
     navigator.clipboard.writeText(text).then(() => {
-      alert('已複製方案內容！可以直接貼到 LINE 群組傳給主辦人喔！');
+      alert('已成功複製試算結果，可直接貼至 LINE 群組！');
     });
   }
 
